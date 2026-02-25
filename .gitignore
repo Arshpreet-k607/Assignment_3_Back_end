@@ -5,3 +5,5 @@ coverage/
 serviceAccountKey.json
 firebase-service-account.json
 .DS_Store
+firebase-service-account.json.json
+testing-evidence/*.png
