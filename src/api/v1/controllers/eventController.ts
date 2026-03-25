@@ -7,6 +7,8 @@ export const createEvent = async (req: Request, res: Response) => {
     const created = await eventService.createEvent(req.body);
     res.status(HTTP_STATUS.CREATED).json(created);
   } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error("Error in createEvent controller", error);
     res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
       message: "Failed to create event",
     });
@@ -18,6 +20,8 @@ export const getAllEvents = async (req: Request, res: Response) => {
     const events = await eventService.getAllEvents();
     res.status(HTTP_STATUS.OK).json(events);
   } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error("Error in getAllEvents controller", error);
     res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
       message: "Failed to fetch events",
     });
@@ -34,6 +38,8 @@ export const getEventById = async (req: Request, res: Response) => {
 
     res.status(HTTP_STATUS.OK).json(event);
   } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error("Error in getEventById controller", error);
     res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
       message: "Failed to fetch event",
     });
@@ -50,6 +56,8 @@ export const updateEvent = async (req: Request, res: Response) => {
 
     res.status(HTTP_STATUS.OK).json(event);
   } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error("Error in updateEvent controller", error);
     res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
       message: "Failed to update event",
     });
@@ -66,6 +74,8 @@ export const deleteEvent = async (req: Request, res: Response) => {
 
     res.status(HTTP_STATUS.OK).json({ message: "Event deleted" });
   } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error("Error in deleteEvent controller", error);
     res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
       message: "Failed to delete event",
     });
