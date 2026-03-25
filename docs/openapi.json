@@ -1,0 +1,391 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Event Registration API",
+    "version": "1.0.0",
+    "description": "API for managing event registration, including creating, updating, listing, and deleting events."
+  },
+  "servers": [
+    {
+      "url": "https://arshpreet-k607.github.io/Assignment_3_Back_end"
+    },
+    {
+      "url": "http://localhost:3000"
+    }
+  ],
+  "paths": {
+    "/api/v1/events": {
+      "post": {
+        "tags": [
+          "Events"
+        ],
+        "summary": "Create a new event",
+        "description": "Creates a new event in the Event Registration API.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EventCreateInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Event created successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Event"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Failed to create event."
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Events"
+        ],
+        "summary": "List all events",
+        "description": "Returns a list of all events.",
+        "responses": {
+          "200": {
+            "description": "A list of events.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Event"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Failed to fetch events."
+          }
+        }
+      }
+    },
+    "/api/v1/events/{id}": {
+      "get": {
+        "tags": [
+          "Events"
+        ],
+        "summary": "Get an event by ID",
+        "description": "Fetches a single event by its unique identifier.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID of the event."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Event found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Event"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Event not found."
+          },
+          "500": {
+            "description": "Failed to fetch event."
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Events"
+        ],
+        "summary": "Update an existing event",
+        "description": "Updates an event with new details.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID of the event to update."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EventUpdateInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Event updated successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Event"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error."
+          },
+          "404": {
+            "description": "Event not found."
+          },
+          "500": {
+            "description": "Failed to update event."
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Events"
+        ],
+        "summary": "Delete an event",
+        "description": "Deletes an event permanently.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID of the event to delete."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Event deleted successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Event not found."
+          },
+          "500": {
+            "description": "Failed to delete event."
+          }
+        }
+      }
+    },
+    "/api/v1/health": {
+      "get": {
+        "tags": [
+          "Health"
+        ],
+        "summary": "Health check",
+        "description": "Returns a simple status payload to indicate that the API is running.",
+        "responses": {
+          "200": {
+            "description": "API is healthy.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "ok"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Event": {
+        "type": "object",
+        "required": [
+          "name",
+          "date",
+          "location",
+          "capacity",
+          "category",
+          "organizerEmail"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier of the event.",
+            "example": "abc123"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 100,
+            "description": "Human-readable name of the event.",
+            "example": "TypeScript Workshop"
+          },
+          "description": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 500,
+            "description": "Optional longer description of the event.",
+            "example": "A hands-on workshop covering advanced TypeScript patterns."
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time",
+            "description": "ISO 8601 date string for when the event starts.",
+            "example": "2026-04-15T18:00:00.000Z"
+          },
+          "location": {
+            "type": "string",
+            "description": "Physical or virtual location of the event.",
+            "example": "Online - Zoom"
+          },
+          "capacity": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 10000,
+            "description": "Maximum number of attendees allowed.",
+            "example": 100
+          },
+          "category": {
+            "type": "string",
+            "description": "Type of event.",
+            "enum": [
+              "conference",
+              "workshop",
+              "meetup",
+              "webinar",
+              "other"
+            ],
+            "example": "workshop"
+          },
+          "status": {
+            "type": "string",
+            "description": "Publication status of the event.",
+            "enum": [
+              "draft",
+              "published",
+              "cancelled"
+            ],
+            "example": "draft"
+          },
+          "isVirtual": {
+            "type": "boolean",
+            "description": "Whether the event is virtual.",
+            "example": true
+          },
+          "organizerEmail": {
+            "type": "string",
+            "format": "email",
+            "description": "Contact email address for the organizer.",
+            "example": "organizer@example.com"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp when the event was created."
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp when the event was last updated."
+          }
+        }
+      },
+      "EventCreateInput": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Event"
+          },
+          {
+            "type": "object",
+            "required": [
+              "name",
+              "date",
+              "location",
+              "capacity",
+              "category",
+              "organizerEmail"
+            ],
+            "properties": {
+              "id": {
+                "readOnly": true
+              },
+              "createdAt": {
+                "readOnly": true
+              },
+              "updatedAt": {
+                "readOnly": true
+              }
+            }
+          }
+        ]
+      },
+      "EventUpdateInput": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/EventCreateInput"
+          },
+          {
+            "type": "object",
+            "description": "Partial update of an event. All fields are optional."
+          }
+        ]
+      }
+    }
+  },
+  "tags": []
+}
